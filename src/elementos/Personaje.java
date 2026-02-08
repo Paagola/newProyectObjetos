@@ -10,7 +10,7 @@ public class Personaje extends Elemento{
     protected int velocidad;
 
     public static int vida() {
-        return (int)(Math.random()*10) + 5;
+        return 50;
     }
 
     public static int velocidad() {

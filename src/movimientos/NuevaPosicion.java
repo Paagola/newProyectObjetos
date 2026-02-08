@@ -1,78 +1,54 @@
 package movimientos;
 
-import java.util.ArrayList;
-
-import elementos.Elemento;
 import elementos.Personaje;
-import elementos.Piedra;
+
 
 public class NuevaPosicion extends Personaje {
     protected int nuevaX;
     protected int nuevaY;
-    protected int ejeX;
-    protected int ejeY;
+    protected Personaje personaje;
     protected String[][] tablero;
+    protected int ejeY;
+    protected int ejeX;
 
-    public NuevaPosicion(int ejeY, int ejeX, int nuevaY, int nuevaX, String[][] tablero) {
+
+    public NuevaPosicion(Personaje personaje, int ejeY, int ejeX, int nuevaY, int nuevaX, String[][] tablero) {
         this.nuevaY = nuevaY;
         this.nuevaX = nuevaX;
-        this.ejeY = ejeY;
-        this.ejeX = ejeX;
         this.tablero = tablero;
-    }
-
-    @Override
-    public int getEjeX() {
-        return this.ejeX;
-    }
-
-    @Override
-    public int getEjeY() {
-        return this.ejeY;
+        this.ejeX = ejeX;
+        this.ejeY = ejeY;
+        this.personaje = personaje;
     }
 
     /**
-     * 
+     * Crea una array de booleanos diciendo desde arriba a la izquierda hasta abajo a la derecha cuales son las posiciones que puede ocupar.e
      */
-    public void moverVacioBueno() {
+    public void moverVacio() {
+        boolean[] posic = new boolean[9];
+        int indx = 0;
 
-        boolean movimiento = false;
-
-        if (this.nuevaY > this.ejeY && buscarVacio(this.ejeY - 1, this.ejeX)) {
-            this.ejeY -= 1;
-            movimiento = true;
-        } else if (this.nuevaY < this.ejeY && buscarVacio(this.ejeY + 1, this.ejeX)) {
-            this.ejeY += 1;
-            movimiento = true;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (buscarVacio(this.ejeY + (i), this.ejeX + (j) )) {
+                    posic[indx] = true;
+                } else {
+                    posic[indx] = false;
+                }
+                indx++;
+            }
         }
-
-        if (this.nuevaX > this.ejeX && buscarVacio(this.ejeY, this.ejeX - 1)) {
-            this.ejeX -= 1;
-            movimiento = true;
-        } else if (this.nuevaX < this.ejeX && buscarVacio(this.ejeY, this.ejeX + 1)) {
-            this.ejeX += 1;
-            movimiento = true;
-        }
-        nuncaQuedarseQuieto(movimiento);
+        PosicionInteligente posIn = new PosicionInteligente(this.personaje, this.ejeY, this.ejeX, this.nuevaY, this.nuevaX, tablero);
+        posIn.moverSegunArray(posic);
     }
 
-    public void moverVacioMalo() {
-
-        if (this.nuevaY > this.ejeY && buscarVacio(this.ejeY + 1, this.ejeX)) {
-            this.ejeY += 1;
-        } else if (this.nuevaY < this.ejeY && buscarVacio(this.ejeY - 1, this.ejeX)) {
-            this.ejeY -= 1;
-        }
-        
-        if (this.nuevaX > this.ejeX && buscarVacio(this.ejeY, this.ejeX + 1)) {
-            this.ejeX += 1;
-        } else if (this.nuevaX < this.ejeX && buscarVacio(this.ejeY, this.ejeX - 1)) {
-            this.ejeX -= 1;
-        }
-    }
-
+    /**
+     * Verifica que la x y la y a la que se quiere acceder no se salgan del tablero y no esten ocupadas.
+     * @param y
+     * @param x
+     * @return
+     */
     public boolean buscarVacio(int y, int x) {
-
         if (y > tablero.length - 1 || y < 0) {
             return false;
         } else if (x > tablero[0].length - 1 || x < 0) {
@@ -82,24 +58,4 @@ public class NuevaPosicion extends Personaje {
         }
         return false;
     }
-
-    /**
-     * Si no se ha hecho ningun movimiento intentamos que busque una salida para 
-     * que no se quede nunca quieto
-     * @param estado
-     */
-    public void nuncaQuedarseQuieto(boolean estado) {
-        if (!estado) {
-            if (buscarVacio(this.ejeY - 1, this.ejeX)) {
-                this.ejeY -= 1;
-            } else if (buscarVacio(this.ejeY + 1, this.ejeX)) {
-                this.ejeY += 1;
-            } else if (buscarVacio(this.ejeY, this.ejeX - 1)) {
-                this.ejeX -= 1;
-            } else if (buscarVacio(this.ejeY, this.ejeX + 1)) { 
-                this.ejeX += 1;
-            }
-        }
-    }
-
 }

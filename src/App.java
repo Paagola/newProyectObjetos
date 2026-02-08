@@ -4,21 +4,25 @@ import java.util.ArrayList;
 import elementos.*;
 
 public class App {
+
+    public static final String RESET = "\u001B[0m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String RED = "\u001B[31m";
+
     public static void main(String[] args) throws Exception {
 
         boolean salir = false;
-        String[][] tablero = new String[20][100];
         ArrayList<Elemento> elementos = new ArrayList<>();
-        elementos = añadirElem(elementos, 20, "Bueno");
-        elementos = añadirElem(elementos, 10, "Malo");
-        elementos = añadirElem(elementos, 30, "Piedra");
+        elementos = añadirElem(elementos, 25, "Bueno");
+        elementos = añadirElem(elementos, 6, "Malo");
+        elementos = añadirElem(elementos, 100, "Piedra");
 
         do {
 
             int contadorMalos = 0;
             int contadorBueno = 0;
-
-            tablero = new String[20][100];
+            clearScreen();
+            String[][] tablero = new String[20][100];
             peleaEntreBuenoYMalo(elementos);
             eliminarSinVida(elementos);
             tablero = añadirElemTablero(tablero, elementos);
@@ -36,10 +40,10 @@ public class App {
 
             if (contadorBueno != 0 && contadorMalos !=0) {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                } clearScreen();
+                } 
             } else {
                 salir = true;
                 clearScreen();
@@ -48,30 +52,20 @@ public class App {
                 eliminarSinVida(elementos);
                 tablero = añadirElemTablero(tablero, elementos);
                 pintarTablero(tablero);
+
+                System.out.println("\n\t\t\t\tLos " + ((contadorBueno == 0)? RED + "Malos" + RESET: 
+                                                            GREEN + "Buenos" + RESET) + " han ganado\n");
             }
-
-            
-
         } while (!salir);
 
     }
 
     /**
-     * Limpiar la pantalla sin problemas (hecho con IA)
+     * Limpiar la pantalla sin problemas 
      */
     public static void clearScreen() {
-        try {
-            String os = System.getProperty("os.name").toLowerCase();
-            if (os.contains("windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                new ProcessBuilder("clear").inheritIO().start().waitFor();
-            }
-        } catch (IOException | InterruptedException e) {
-            // Fallback: imprimir líneas en blanco
-            for (int i = 0; i < 50; i++)
-                System.out.println();
-        }
+        System.out.print("\033[H"); 
+        System.out.flush();
     }
 
     /**
@@ -80,19 +74,27 @@ public class App {
      * @param tablero
      */
     public static void pintarTablero(String[][] tablero) {
+
+        StringBuilder buffer = new StringBuilder();
+
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[0].length; j++) {
                 if (tablero[i][j] == null) {
-                    System.out.print(" ");
+                    buffer.append(" ");
                 } else {
-                    System.out.print(tablero[i][j]);
+                    buffer.append(tablero[i][j]);
                 }
             }
-            System.out.println();
+            buffer.append("\n");
         }
+        System.out.print(buffer.toString());
     }
 
-
+    /**
+     * Verifica que todos los elementos tengan vida y si su vida es 0 o menor los elimina del array.
+     * @param elementos
+     * @return
+     */
     public static ArrayList<Elemento> eliminarSinVida(ArrayList<Elemento> elementos) {
         
         for (int i = 0; i < elementos.size(); i++) {
@@ -211,6 +213,13 @@ public class App {
         return false;
     }
 
+
+    /**
+     * Recorre el array principal de elementos y segun su categoria le asigna su funcion de cazar o huir
+     * @param elementos
+     * @param tablero
+     * @return
+     */
     public static ArrayList<Elemento> cazarHuir(ArrayList<Elemento> elementos, String[][] tablero) {
 
         for (Elemento elem : elementos) {
@@ -225,6 +234,10 @@ public class App {
         return elementos;
     }
 
+    /**
+     * Verifica si un malo esta cerca de un bueno y si lo esta ejecuta su funcion de atacar.
+     * @param elementos
+     */
     public static void peleaEntreBuenoYMalo(ArrayList<Elemento> elementos) {
         for (Elemento elem : elementos) {
             if (elem.getClass() == Malo.class) {

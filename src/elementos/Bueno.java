@@ -17,10 +17,19 @@ public class Bueno extends Personaje{
         return GREEN + "ï" + RESET;
     }
 
+
+    /**
+     * Detecta si un enemigo esta a menos de 10 de distancia y si lo esta huye de el.
+     * Sabiendo cual es la posicion del enemeigo crea un nuevo objeto para ver cual seria la siguiente posicion mas optima para huir.
+     * @param elemento
+     * @param tablero
+     */
     public void huir(ArrayList<Elemento> elemento, String[][] tablero) {
         
         int pasosminimos = Integer.MAX_VALUE;
         int x = 0, y = 0;
+
+        boolean cerca = false;
 
         for (Elemento elem : elemento) {
             if (elem.getClass() == Malo.class) {
@@ -30,23 +39,25 @@ public class Bueno extends Personaje{
                     pasosminimos = totalPasos;
                     y = elem.getEjeY();
                     x = elem.getEjeX();
+
+                    if (totalPasos < 10 && !cerca) {
+                        cerca = true;
+                    }
                 }
             }
         }
-        int antiguoY = this.ejeY;
-        int antiguoX = this.ejeX;
 
-        NuevaPosicion movimiento = new NuevaPosicion(this.ejeY, this.ejeX, y, x, tablero);
-        movimiento.moverVacioBueno();
+        if (cerca) {
+            int antiguoY = this.ejeY;
+            int antiguoX = this.ejeX;
 
-        tablero[antiguoY][antiguoX] = null;
+            NuevaPosicion movimiento = new NuevaPosicion(this, this.ejeY, this.ejeX, y, x, tablero);
+            movimiento.moverVacio();
 
-        this.ejeX = movimiento.getEjeX();
-        this.ejeY = movimiento.getEjeY();
+            tablero[antiguoY][antiguoX] = null;
 
-        tablero[this.ejeY][this.ejeX] = this.toString();
+            tablero[this.ejeY][this.ejeX] = this.toString();
+        }
+        
     }
-
-
-
 }
