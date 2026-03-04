@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import movimientos.NuevaPosicion;
 
-public class Bueno extends Personaje{
+public class Bueno extends Personaje {
 
     public Bueno() {
         this.ejeX = ejeX();
@@ -17,15 +17,17 @@ public class Bueno extends Personaje{
         return GREEN + "ï" + RESET;
     }
 
-
     /**
-     * Detecta si un enemigo esta a menos de 10 de distancia y si lo esta huye de el.
-     * Sabiendo cual es la posicion del enemeigo crea un nuevo objeto para ver cual seria la siguiente posicion mas optima para huir.
+     * Detecta si un enemigo esta a menos de 10 de distancia y si lo esta huye de
+     * el.
+     * Sabiendo cual es la posicion del enemeigo crea un nuevo objeto para ver cual
+     * seria la siguiente posicion mas optima para huir.
+     * 
      * @param elemento
      * @param tablero
      */
     public void huir(ArrayList<Elemento> elemento, String[][] tablero) {
-        
+
         int pasosminimos = Integer.MAX_VALUE;
         int x = 0, y = 0;
 
@@ -58,6 +60,8 @@ public class Bueno extends Personaje{
 
             tablero[this.ejeY][this.ejeX] = this.toString();
         }
-        
+
     }
+
+
 }

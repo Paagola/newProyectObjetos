@@ -5,14 +5,14 @@ public class Elemento {
     protected int ejeY;
 
     public int ejeY() {
-        return (int)(Math.random()*20);
+        return (int) (Math.random() * 50);
     }
 
     public int ejeX() {
-        return (int)(Math.random()*100);
+        return (int) (Math.random() * 200);
     }
 
-    //Getters y Setters
+    // Getters y Setters
     public int getEjeX() {
         return this.ejeX;
     }

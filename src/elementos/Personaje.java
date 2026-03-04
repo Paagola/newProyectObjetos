@@ -1,6 +1,6 @@
 package elementos;
 
-public class Personaje extends Elemento{
+public class Personaje extends Elemento {
 
     public static final String RESET = "\u001B[0m";
     public static final String GREEN = "\u001B[32m";
@@ -11,10 +11,6 @@ public class Personaje extends Elemento{
 
     public static int vida() {
         return 50;
-    }
-
-    public static int velocidad() {
-        return (int)(Math.random()*2) + 1;
     }
 
     public int getVida() {

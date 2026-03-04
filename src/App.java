@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.ArrayList;
 
 import elementos.*;
@@ -13,22 +12,22 @@ public class App {
 
         boolean salir = false;
         ArrayList<Elemento> elementos = new ArrayList<>();
-        elementos = añadirElem(elementos, 25, "Bueno");
-        elementos = añadirElem(elementos, 6, "Malo");
+        elementos = añadirElem(elementos, 100, "Bueno");
+        elementos = añadirElem(elementos, 20, "Malo");
         elementos = añadirElem(elementos, 100, "Piedra");
 
+        System.out.print("\033[H");
         do {
 
             int contadorMalos = 0;
             int contadorBueno = 0;
             clearScreen();
-            String[][] tablero = new String[20][100];
+            String[][] tablero = new String[50][200];
             peleaEntreBuenoYMalo(elementos);
             eliminarSinVida(elementos);
             tablero = añadirElemTablero(tablero, elementos);
             pintarTablero(tablero);
             elementos = cazarHuir(elementos, tablero);
-            
 
             for (Elemento e : elementos) {
                 if (e.getClass() == Malo.class) {
@@ -37,89 +36,30 @@ public class App {
                     contadorBueno++;
                 }
             }
+            System.out
+                    .printf("\n\t\t\t\t Buenos: %s \t\t Malos: %s \t\t", GREEN + contadorBueno + RESET,
+                            RED + contadorMalos + RESET);
 
-            if (contadorBueno != 0 && contadorMalos !=0) {
+            if (contadorBueno != 0 && contadorMalos != 0) {
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                } 
+                }
             } else {
                 salir = true;
                 clearScreen();
-                tablero = new String[20][100];
+                tablero = new String[50][200];
                 peleaEntreBuenoYMalo(elementos);
                 eliminarSinVida(elementos);
                 tablero = añadirElemTablero(tablero, elementos);
                 pintarTablero(tablero);
 
-                System.out.println("\n\t\t\t\tLos " + ((contadorBueno == 0)? RED + "Malos" + RESET: 
-                                                            GREEN + "Buenos" + RESET) + " han ganado\n");
+                System.out.println("\n\t\t\t\tLos "
+                        + ((contadorBueno == 0) ? RED + "Malos" + RESET : GREEN + "Buenos" + RESET)
+                        + " han ganado\n");
             }
         } while (!salir);
-
-    }
-
-    /**
-     * Limpiar la pantalla sin problemas 
-     */
-    public static void clearScreen() {
-        System.out.print("\033[H"); 
-        System.out.flush();
-    }
-
-    /**
-     * Pinta el tablero con todos los elementos dentro.
-     * 
-     * @param tablero
-     */
-    public static void pintarTablero(String[][] tablero) {
-
-        StringBuilder buffer = new StringBuilder();
-
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero[0].length; j++) {
-                if (tablero[i][j] == null) {
-                    buffer.append(" ");
-                } else {
-                    buffer.append(tablero[i][j]);
-                }
-            }
-            buffer.append("\n");
-        }
-        System.out.print(buffer.toString());
-    }
-
-    /**
-     * Verifica que todos los elementos tengan vida y si su vida es 0 o menor los elimina del array.
-     * @param elementos
-     * @return
-     */
-    public static ArrayList<Elemento> eliminarSinVida(ArrayList<Elemento> elementos) {
-        
-        for (int i = 0; i < elementos.size(); i++) {
-            if (elementos.get(i).getClass() != Piedra.class) {
-                Personaje p1 = (Personaje) elementos.get(i);
-                if (p1.getVida() < 1) {
-                    elementos.remove(i);
-                }
-            }
-        }
-        return elementos;
-    }
-
-    /**
-     * Añade los elementos al tablero con su respectivo simbolo
-     * 
-     * @param tablero
-     * @param elementos
-     * @return
-     */
-    public static String[][] añadirElemTablero(String[][] tablero, ArrayList<Elemento> elementos) {
-        for (Elemento elemento : elementos) {
-                tablero[elemento.getEjeY()][elemento.getEjeX()] = elemento.toString();
-        }
-        return tablero;
     }
 
     /**
@@ -162,6 +102,70 @@ public class App {
             elementos.add(comprob);
         }
         return elementos;
+    }
+
+    /**
+     * Limpiar la pantalla sin problemas
+     */
+    public static void clearScreen() {
+        System.out.print("\033[H");
+        System.out.flush();
+    }
+
+    /**
+     * Pinta el tablero con todos los elementos dentro.
+     * 
+     * @param tablero
+     */
+    public static void pintarTablero(String[][] tablero) {
+
+        StringBuilder buffer = new StringBuilder();
+
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[0].length; j++) {
+                if (tablero[i][j] == null) {
+                    buffer.append(" ");
+                } else {
+                    buffer.append(tablero[i][j]);
+                }
+            }
+            buffer.append("\n");
+        }
+        System.out.print(buffer.toString());
+    }
+
+    /**
+     * Verifica que todos los elementos tengan vida y si su vida es 0 o menor los
+     * elimina del array.
+     * 
+     * @param elementos
+     * @return
+     */
+    public static ArrayList<Elemento> eliminarSinVida(ArrayList<Elemento> elementos) {
+
+        for (int i = 0; i < elementos.size(); i++) {
+            if (elementos.get(i).getClass() != Piedra.class) {
+                Personaje p1 = (Personaje) elementos.get(i);
+                if (p1.getVida() < 1) {
+                    elementos.remove(i);
+                }
+            }
+        }
+        return elementos;
+    }
+
+    /**
+     * Añade los elementos al tablero con su respectivo simbolo
+     * 
+     * @param tablero
+     * @param elementos
+     * @return
+     */
+    public static String[][] añadirElemTablero(String[][] tablero, ArrayList<Elemento> elementos) {
+        for (Elemento elemento : elementos) {
+            tablero[elemento.getEjeY()][elemento.getEjeX()] = elemento.toString();
+        }
+        return tablero;
     }
 
     /**
@@ -213,9 +217,10 @@ public class App {
         return false;
     }
 
-
     /**
-     * Recorre el array principal de elementos y segun su categoria le asigna su funcion de cazar o huir
+     * Recorre el array principal de elementos y segun su categoria le asigna su
+     * funcion de cazar o huir
+     * 
      * @param elementos
      * @param tablero
      * @return
@@ -235,19 +240,22 @@ public class App {
     }
 
     /**
-     * Verifica si un malo esta cerca de un bueno y si lo esta ejecuta su funcion de atacar.
+     * Verifica si un malo esta cerca de un bueno y si lo esta ejecuta su funcion de
+     * atacar.
+     * 
      * @param elementos
      */
     public static void peleaEntreBuenoYMalo(ArrayList<Elemento> elementos) {
         for (Elemento elem : elementos) {
             if (elem.getClass() == Malo.class) {
+
                 for (Elemento elemtwo : elementos) {
                     if (elemtwo.getClass() == Bueno.class) {
 
                         if (Math.abs(elem.getEjeX() - elemtwo.getEjeX()) <= 1
                                 && Math.abs(elem.getEjeY() - elemtwo.getEjeY()) <= 1) {
-                                    Malo m1 = (Malo) elem;
-                                    m1.atacar(elem, elemtwo);
+                            Malo m1 = (Malo) elem;
+                            m1.atacar(elem, elemtwo);
                         }
                     }
                 }

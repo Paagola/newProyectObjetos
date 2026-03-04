@@ -2,7 +2,6 @@ package movimientos;
 
 import elementos.Personaje;
 
-
 public class NuevaPosicion extends Personaje {
     protected int nuevaX;
     protected int nuevaY;
@@ -10,7 +9,6 @@ public class NuevaPosicion extends Personaje {
     protected String[][] tablero;
     protected int ejeY;
     protected int ejeX;
-
 
     public NuevaPosicion(Personaje personaje, int ejeY, int ejeX, int nuevaY, int nuevaX, String[][] tablero) {
         this.nuevaY = nuevaY;
@@ -22,7 +20,8 @@ public class NuevaPosicion extends Personaje {
     }
 
     /**
-     * Crea una array de booleanos diciendo desde arriba a la izquierda hasta abajo a la derecha cuales son las posiciones que puede ocupar.e
+     * Crea una array de booleanos diciendo desde arriba a la izquierda hasta abajo
+     * a la derecha cuales son las posiciones que puede ocupar.e
      */
     public void moverVacio() {
         boolean[] posic = new boolean[9];
@@ -30,7 +29,7 @@ public class NuevaPosicion extends Personaje {
 
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if (buscarVacio(this.ejeY + (i), this.ejeX + (j) )) {
+                if (buscarVacio(this.ejeY + (i), this.ejeX + (j))) {
                     posic[indx] = true;
                 } else {
                     posic[indx] = false;
@@ -38,12 +37,15 @@ public class NuevaPosicion extends Personaje {
                 indx++;
             }
         }
-        PosicionInteligente posIn = new PosicionInteligente(this.personaje, this.ejeY, this.ejeX, this.nuevaY, this.nuevaX, tablero);
+        PosicionInteligente posIn = new PosicionInteligente(this.personaje, this.ejeY, this.ejeX, this.nuevaY,
+                this.nuevaX, tablero);
         posIn.moverSegunArray(posic);
     }
 
     /**
-     * Verifica que la x y la y a la que se quiere acceder no se salgan del tablero y no esten ocupadas.
+     * Verifica que la x y la y a la que se quiere acceder no se salgan del tablero
+     * y no esten ocupadas.
+     * 
      * @param y
      * @param x
      * @return

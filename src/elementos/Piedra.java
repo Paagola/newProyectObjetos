@@ -1,10 +1,10 @@
 package elementos;
 
-public class Piedra extends Elemento{
+public class Piedra extends Elemento {
 
     public Piedra() {
         this.ejeX = ejeX();
-        this.ejeY = ejeY(); 
+        this.ejeY = ejeY();
     }
 
     @Override
