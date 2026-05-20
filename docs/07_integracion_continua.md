@@ -9,8 +9,8 @@ La integración continua consiste en ejecutar automáticamente una serie de comp
 ## ¿Cuándo se ejecuta nuestra acción?
 
 Hemos configurado la acción para que se lance en dos situaciones:
-- Cuando se hace un **push** a la rama `mejora-tecnica`.
-- Cuando se abre una **pull request** hacia la rama `main`.
+- Cuando se hace un **push** a la rama `mejora`.
+- Cuando se abre una **pull request** hacia la rama `master`.
 
 ## ¿Qué hace exactamente?
 
