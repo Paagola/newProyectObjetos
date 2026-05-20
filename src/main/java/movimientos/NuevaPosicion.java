@@ -3,7 +3,7 @@ package movimientos;
 import elementos.Personaje;
 
 
-public class NuevaPosicion extends Personaje {
+public class NuevaPosicion {
     protected int nuevaX;
     protected int nuevaY;
     protected Personaje personaje;

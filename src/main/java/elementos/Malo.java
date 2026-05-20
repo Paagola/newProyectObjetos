@@ -4,12 +4,18 @@ import java.util.ArrayList;
 
 import movimientos.NuevaPosicion;
 
+/**
+ * Representa a un enemigo de la simulación.
+ * Su objetivo principal es perseguir y atacar a los objetos Bueno.
+ */
 public class Malo extends Personaje {
 
+    /**
+     * Instancia un nuevo Malo llamando a la configuración 
+     * por defecto de Personaje.
+     */
     public Malo() {
-        this.ejeX = ejeX();
-        this.ejeY = ejeY();
-        this.vida = vida();
+        super();
     }
 
     @Override
@@ -52,22 +58,21 @@ public class Malo extends Personaje {
         tablero[this.ejeY][this.ejeX] = this.toString();
     }
 
+    /**
+     * Aplica daño a un elemento Bueno basándose en una probabilidad aleatoria.
+     * 
+     * @param elemMalo Personaje que realiza el ataque
+     * @param elemBueno Personaje que recibe el ataque
+     */
     public void atacar(Elemento elemMalo, Elemento elemBueno) {
 
         int eleccion = (int) (Math.random() * 10) + 1;
 
-        switch (eleccion) {
-            case 1, 2, 3, 4, 5, 6, 7, 8, 9:
-                Bueno b1 = (Bueno) elemBueno;
-                b1.setVida(b1.getVida() - 3);
-                break;
-
-            case 10:
-                this.vida -= 5;
-                break;
-            default:
-
-                break;
+        if (eleccion <= 9) {
+            Bueno b1 = (Bueno) elemBueno;
+            b1.setVida(b1.getVida() - 3);
+        } else if (eleccion == 10) {
+            this.vida -= 5;
         }
     }
 }

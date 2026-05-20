@@ -1,7 +1,8 @@
-import java.io.IOException;
 import java.util.ArrayList;
 
 import elementos.*;
+
+
 
 public class App {
 
@@ -15,7 +16,7 @@ public class App {
         ArrayList<Elemento> elementos = new ArrayList<>();
         elementos = añadirElem(elementos, 25, "Bueno");
         elementos = añadirElem(elementos, 6, "Malo");
-        elementos = añadirElem(elementos, 100, "Piedra");
+        elementos = añadirElem(elementos, 50, "Piedra");
 
         do {
 
@@ -40,7 +41,7 @@ public class App {
 
             if (contadorBueno != 0 && contadorMalos !=0) {
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 } 
@@ -61,7 +62,7 @@ public class App {
     }
 
     /**
-     * Limpiar la pantalla sin problemas 
+     * Borrar todo el contenido de la pantalla para volver a empezar desde el principio.
      */
     public static void clearScreen() {
         System.out.print("\033[H"); 
@@ -132,7 +133,7 @@ public class App {
      */
     public static ArrayList<Elemento> añadirElem(ArrayList<Elemento> elementos, int numMalos, String tipoclase) {
         for (int i = 0; i < numMalos; i++) {
-            Elemento comprob = new Malo();
+            Elemento comprob = null;
             switch (tipoclase) {
                 case "Malo":
                     comprob = new Malo();
@@ -154,8 +155,8 @@ public class App {
             int x = comprob.getEjeX();
 
             while (comprobarOcupado(elementos, y, x) || malosYbuenosLejos(elementos, tipoclase, y, x)) {
-                comprob.setEjeY(comprob.ejeY());
-                comprob.setEjeX(comprob.ejeX());
+                comprob.setEjeY((int)(Math.random() * 20));
+                comprob.setEjeX((int)(Math.random() * 100));
                 y = comprob.getEjeY();
                 x = comprob.getEjeX();
             }
