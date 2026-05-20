@@ -2,9 +2,9 @@ name: Compilar y Testear con Maven
 
 on:
   push:
-    branches: [ "mejora-tecnica" ]
+    branches: [ "mejora" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build:
