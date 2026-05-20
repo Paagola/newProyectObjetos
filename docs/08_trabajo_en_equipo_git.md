@@ -1,46 +1,59 @@
 # 8. Trabajo en Equipo con Git
 
-Durante el desarrollo de esta práctica hemos organizado nuestro trabajo utilizando las herramientas de control de versiones que ofrece Git, siguiendo una serie de normas básicas para evitar conflictos y mantener el historial limpio.
+Durante el desarrollo de esta práctica hemos organizado nuestro trabajo utilizando las herramientas de control de versiones que ofrece Git, siguiendo una serie de normas básicas para mantener el historial limpio y separar claramente el estado inicial del proyecto de las mejoras realizadas.
 
 ## Rama utilizada
 
-Para cumplir el requisito de no tocar la rama `main`, hemos creado desde el principio una rama específica donde se ha realizado todo el trabajo:
+Para cumplir el requisito de no mezclar el trabajo de mejora con el estado estable del proyecto, hemos creado una rama específica donde se ha realizado todo el trabajo técnico:
 
 ```bash
-git checkout -b mejora-tecnica
+git checkout -b mejora
 ```
 
-Esta rama ha sido el lugar donde se han ido acumulando todos los cambios: la adaptación a Maven, las refactorizaciones, los tests, los documentos de `docs` y la configuración de GitHub Actions. La rama `main` se ha mantenido intacta como referencia del estado inicial del proyecto.
+Esta rama contiene todos los cambios de la práctica: la adaptación a Maven, las refactorizaciones, los tests, los documentos de `docs`, la configuración de GitHub Actions y el diagrama de clases. La rama `master` se ha mantenido como referencia del estado inicial del juego.
 
-## Organización del trabajo en el equipo
+## Organización del trabajo
 
-Nos hemos repartido el trabajo dividiendo las tareas principales entre los miembros del equipo de la siguiente manera:
+El proyecto ha sido desarrollado de forma individual. Para cumplir con el requisito técnico de separación de ramas se ha aplicado la siguiente estrategia al finalizar el trabajo:
 
-- **Configuración inicial y Maven**: adaptación de la estructura del proyecto y el `pom.xml`.
-- **Análisis, refactorización y tests**: revisión del código, mejoras y escritura de pruebas unitarias.
-- **Documentación y diagrama**: redacción de los ficheros Markdown de `docs` y elaboración del diagrama UML.
+1. Se creó la rama `mejora` apuntando al estado con todas las mejoras aplicadas.
+2. Se realizó un único commit en esa rama agrupando todo el trabajo técnico realizado.
+3. La rama `master` se restauró al commit `fa3311f` (`first phase done`), que representa el estado inicial del juego tal como se entregó en la primera fase de la asignatura.
 
-## Cómo evitamos sobrescribir cambios
+Esto se consiguió con los siguientes comandos:
 
-Para evitar conflictos entre los miembros del equipo, hemos seguido estas normas básicas:
+```bash
+# Crear la rama de trabajo con todo el trabajo ya hecho
+git checkout -b mejora
 
-- Antes de ponerse a trabajar, cada miembro hacía siempre un `git pull` para tener la última versión.
-- Cada tarea se completaba en su totalidad antes de hacer el commit, intentando que cada cambio fuera lo más pequeño y concreto posible.
-- No se modificaban al mismo tiempo los mismos ficheros desde distintos ordenadores.
+# Añadir y commitear todo el trabajo pendiente
+git add pom.xml src/main/ src/test/ docs/ .github/ bin/main/
+git commit -m "Mejora técnica: migración a Maven, refactorización, tests, Javadoc, CI y documentación"
 
-## Normas de commits
+# Restaurar master al estado inicial del juego
+git checkout master
+git reset --hard fa3311f
 
-Los commits se han hecho con mensajes cortos pero descriptivos que indicaran qué se había cambiado, por ejemplo:
-
-```
-Añadir pom.xml y reestructurar carpetas para Maven
-Simplificar switch en Malo y corregir herencia en NuevaPosicion
-Añadir tests unitarios con JUnit 5
-Añadir Javadoc a las clases principales
-Configurar GitHub Actions para CI
-Añadir diagrama de clases UML en Mermaid
+# Publicar ambas ramas
+git push origin master --force
+git push origin mejora
 ```
 
-## Sincronización final
+## Normas de commits seguidas
 
-Una vez completada la práctica, el estado final de la rama `mejora-tecnica` se puede integrar con la rama `main` mediante una pull request, que es precisamente una de las condiciones que activa nuestro flujo de GitHub Actions.
+Los commits se han hecho con mensajes descriptivos que indican el alcance del cambio, siguiendo el criterio de que cada commit refleje una unidad de trabajo completa y coherente:
+
+```
+first phase done          ← estado inicial del juego (rama master)
+proyect done              ← versión previa a Maven (descartada del historial activo)
+Mejora técnica: ...       ← todo el trabajo de la práctica (rama mejora)
+```
+
+## Estado final del repositorio
+
+```
+master  →  fa3311f  first phase done          (estado inicial, referencia estable)
+mejora  →  14edda9  Mejora técnica: ...       (todo el trabajo de esta práctica)
+```
+
+La rama `mejora` es la que activa el flujo de integración continua de GitHub Actions al hacer push, y la que se integraría con `master` mediante una pull request para dar por cerrada la práctica.
