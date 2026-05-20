@@ -4,12 +4,17 @@ import java.util.ArrayList;
 
 import movimientos.NuevaPosicion;
 
+/**
+ * Representa un aliado en la simulación.
+ * Su objetivo principal es huir de los enemigos.
+ */
 public class Bueno extends Personaje{
 
+    /**
+     * Instancia un personaje Bueno con la configuración estándar.
+     */
     public Bueno() {
-        this.ejeX = ejeX();
-        this.ejeY = ejeY();
-        this.vida = vida();
+        super();
     }
 
     @Override
@@ -58,6 +63,5 @@ public class Bueno extends Personaje{
 
             tablero[this.ejeY][this.ejeX] = this.toString();
         }
-        
     }
 }
